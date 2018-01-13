@@ -1,2 +1,10 @@
 go语言开发的im服务<br>
 进行中...<br>
+（1）遇到的liteide不提示代码的问题，解决方案:<br>
+1. 从gocode下载地址下载gocode-master ，并解压 https://github.com/nsf/gocode<br<
+
+2. go build gocode.go autocompletecontext.go autocompletefile.go client.go config.go cursorcontext.go decl.go declcache.go formatters.go os_windows.go package.go ripper.go rpc.go scope.go server.go utils.go type_alias_build_hack_18.go package_bin.go package_text.go<br>
+
+3. 使用上一步生成的gocode.exe替换liteide bin目录下的gocode.exe文件<br>
+
+原因是新版liteide的gocode.exe文件太老了，需要自己编译生成一个替换一下<br>
