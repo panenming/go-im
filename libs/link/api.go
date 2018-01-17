@@ -8,7 +8,7 @@ import (
 )
 
 // 协议以及编码定义的接口
-
+// 定义 protocol中NewCodec io.ReadWriter，这样可以直接将网络的包装进行发送
 type Codec interface {
 	Receive() (interface{}, error)
 	Send(interface{}) error
