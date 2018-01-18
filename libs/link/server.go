@@ -1,6 +1,7 @@
 package link
 
 import (
+	"log"
 	"net"
 )
 
@@ -42,7 +43,8 @@ func (server *Server) Serve() error {
 	for {
 		conn, err := Accept(server.listener)
 		if err != nil {
-			return err
+			log.Fatal("Accept error : ", err)
+			continue
 		}
 
 		go func() {

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"fmt"
 
 	"github.com/panenming/go-im/go-tcpdemo/link_test/codec"
 	"github.com/panenming/go-im/libs/link"
@@ -22,7 +22,11 @@ func main() {
 	json.Register(AddRsp{})
 
 	server, err := link.Listen("tcp", "0.0.0.0:9000", json, 100 /* sync send */, link.HandlerFunc(serverSessionLoop))
-	checkErr("startserver ", err)
+	if err != nil {
+		fmt.Println("startserver ", err)
+		return
+	}
+
 	server.Serve()
 }
 
@@ -30,18 +34,19 @@ func serverSessionLoop(session *link.Session) {
 	for {
 		req, err := session.Receive()
 
-		checkErr("server receive ", err)
 		//fmt.Println("请求的sessionid=", session.ID())
 
+		if err != nil {
+			fmt.Println("server receive---", err.Error())
+			return
+		}
 		err = session.Send(&AddRsp{
-			req.(*AddReq).A + req.(*AddReq).B,
+			req.(*AddReq).A,
 		})
-		checkErr("server send ", err)
-	}
-}
 
-func checkErr(location string, err error) {
-	if err != nil {
-		log.Fatal(location, err.Error())
+		if err != nil {
+			fmt.Println("server send---", err.Error())
+			return
+		}
 	}
 }

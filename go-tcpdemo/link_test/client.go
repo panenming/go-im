@@ -11,8 +11,8 @@ import (
 	"github.com/panenming/go-im/libs/link"
 )
 
-// 并发1w
-const batch int = 10000
+// 并发100w
+const batch int = 1000000
 
 type AddReq struct {
 	A, B int
@@ -35,21 +35,27 @@ func main() {
 
 func clientSessionLoop(addr string, json *codec.JsonProtocol) {
 	var wg sync.WaitGroup
+	log.Println("打印返回值！")
 	for i := 0; i < batch; i++ {
-		wg.Add(1)
 		client, err := link.Dial("tcp", addr, json, 0)
 		checkErr(strconv.Itoa(i)+"client start ", err)
-		err = client.Send(&AddReq{
-			i, i,
-		})
-		checkErr(strconv.Itoa(i)+"client send ", err)
-		//log.Printf("Send: %d + %d", i, i)
+		wg.Add(1)
+		go func() {
+			err = client.Send(&AddReq{
+				i, i,
+			})
+			checkErr(strconv.Itoa(i)+"client send ", err)
+			//log.Printf("Send: %d + %d", i, i)
+			rsp, err := client.Receive()
+			wg.Done()
+			if err != nil {
+				log.Println("receive : ", err)
+				return
+			}
+			log.Printf("Receive: %d", rsp.(*AddRsp).C)
+		}()
 
-		_, err = client.Receive()
-		checkErr(strconv.Itoa(i)+"client receive ", err)
-		//log.Printf("Receive: %d", rsp.(*AddRsp).C)
-		log.Println("count=", i)
-		wg.Done()
+		//log.Println("count=", i)
 	}
 	wg.Wait()
 }
