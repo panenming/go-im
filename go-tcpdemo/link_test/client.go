@@ -12,7 +12,7 @@ import (
 )
 
 // 并发100w
-const batch int = 1000000
+const batch int = 4000
 
 type AddReq struct {
 	A, B int
@@ -37,10 +37,11 @@ func clientSessionLoop(addr string, json *codec.JsonProtocol) {
 	var wg sync.WaitGroup
 	log.Println("打印返回值！")
 	for i := 0; i < batch; i++ {
-		client, err := link.Dial("tcp", addr, json, 0)
-		checkErr(strconv.Itoa(i)+"client start ", err)
 		wg.Add(1)
 		go func() {
+			client, err := link.Dial("tcp", addr, json, 20)
+			checkErr(strconv.Itoa(i)+"client start ", err)
+			//time.Sleep(2 * 60 * time.Second)
 			err = client.Send(&AddReq{
 				i, i,
 			})

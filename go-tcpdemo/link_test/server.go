@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	"net/http"
+
+	_ "net/http/pprof"
 
 	"github.com/panenming/go-im/go-tcpdemo/link_test/codec"
 	"github.com/panenming/go-im/libs/link"
@@ -16,6 +19,7 @@ type AddRsp struct {
 }
 
 func main() {
+	go http.ListenAndServe(":9001", nil)
 	json := codec.Json()
 
 	json.Register(AddReq{})
