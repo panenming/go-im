@@ -19,13 +19,13 @@ type AddRsp struct {
 }
 
 func main() {
-	go http.ListenAndServe(":9001", nil)
+	go http.ListenAndServe(":5001", nil)
 	json := codec.Json()
 
 	json.Register(AddReq{})
 	json.Register(AddRsp{})
 
-	server, err := link.Listen("tcp", "0.0.0.0:9000", json, 100 /* sync send */, link.HandlerFunc(serverSessionLoop))
+	server, err := link.Listen("tcp", "0.0.0.0:5000", json, 100 /* sync send */, link.HandlerFunc(serverSessionLoop))
 	if err != nil {
 		fmt.Println("startserver ", err)
 		return

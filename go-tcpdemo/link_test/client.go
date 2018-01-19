@@ -12,7 +12,7 @@ import (
 )
 
 // 并发100w
-const batch int = 4000
+const batch int = 50000
 
 type AddReq struct {
 	A, B int
@@ -28,7 +28,7 @@ func main() {
 	json.Register(AddReq{})
 	json.Register(AddRsp{})
 
-	addr := "127.0.0.1:9000"
+	addr := "10.37.149.164:5000"
 
 	clientSessionLoop(addr, json)
 }
@@ -40,7 +40,7 @@ func clientSessionLoop(addr string, json *codec.JsonProtocol) {
 		wg.Add(1)
 		go func() {
 			client, err := link.Dial("tcp", addr, json, 20)
-			checkErr(strconv.Itoa(i)+"client start ", err)
+			checkErr(strconv.Itoa(i)+" client start err ：", err)
 			//time.Sleep(2 * 60 * time.Second)
 			err = client.Send(&AddReq{
 				i, i,
@@ -48,6 +48,7 @@ func clientSessionLoop(addr string, json *codec.JsonProtocol) {
 			checkErr(strconv.Itoa(i)+"client send ", err)
 			//log.Printf("Send: %d + %d", i, i)
 			rsp, err := client.Receive()
+			client.Close()
 			wg.Done()
 			if err != nil {
 				log.Println("receive : ", err)
