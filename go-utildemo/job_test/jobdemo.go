@@ -16,5 +16,5 @@ func main() {
 
 	jobs.Start()
 	time.Sleep(60 * time.Second)
-	// 使用for{}堵塞会导致cpu飘高，导致cpu一个核100%
+	// 使用for{}堵塞会导致cpu飘高，导致cpu一个核100% 建议使用select{}
 }
