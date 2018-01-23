@@ -17,6 +17,16 @@ type LEVEL int // 日志等级
 type COLOR int // 显示颜色
 type STYLE int // 显示样式
 
+// ALL = 0 DEBUG = 1 INFO = 2 WARN = 3 ERROR = 4 FATAL = 5
+const (
+	ALL   LEVEL = iota //所有日志
+	DEBUG              //调试
+	INFO               //信息
+	WARN               //警告
+	ERROR              //错误
+	FATAL              //崩溃
+)
+
 const (
 	CLR_BLACK   = COLOR(30) // 黑色
 	CLR_RED     = COLOR(31) // 红色
@@ -104,6 +114,7 @@ func Initialize(fileDir, fileName string) {
 
 	// 创建文件
 	fn := logFile.newlogfile()
+
 	var err error
 	logFile.logfile, err = os.OpenFile(fn, os.O_RDWR|os.O_APPEND|os.O_CREATE, os.ModePerm)
 	if err != nil {
@@ -160,6 +171,7 @@ func newDumpFile() string {
 	dir := fmt.Sprintf("./exceptions/%04d-%02d-%02d/", now.Year(), int(now.Month()), now.Day())
 	os.MkdirAll(dir, os.ModePerm)
 	fn := fmt.Sprintf("%s%s.log", dir, filename)
+	fmt.Println("fn = ", fn)
 	if !isFileExist(fn) {
 		return fn
 	}
@@ -697,9 +709,11 @@ func console(ll LEVEL, args string) {
 
 // 获取新的日志文件的名称
 func (f *LOG_FILE) newlogfile() string {
+
 	dir := fmt.Sprintf("%s/%04d-%02d-%02d/", f.log_dir, f.timestamp.Year(), f.timestamp.Month(), f.timestamp.Day())
-	os.Mkdir(dir, os.ModePerm)
+	os.MkdirAll(dir, os.ModePerm)
 	filename := fmt.Sprintf("%s/%s.%02d_%02d_%02d", dir, f.log_filename, f.timestamp.Hour(), f.timestamp.Minute(), f.timestamp.Second())
+
 	fn := filename + ".log"
 	if !isFileExist(fn) {
 		return fn
@@ -804,7 +818,7 @@ func (f *LOG_FILE) checkFileExist() bool {
 func (f *LOG_FILE) rename() {
 	f.timestamp = time.Now()
 	fn := f.newlogfile()
-	if f.logfilepath != nil {
+	if f.logfile != nil {
 		f.logfile.Close()
 	}
 
