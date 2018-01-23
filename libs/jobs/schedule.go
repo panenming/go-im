@@ -49,6 +49,14 @@ func (s Scheduler) run() {
 	}()
 }
 
+// 类似与js中的SetTimeout，一段时间后执行回调函数
+func SetTimeOut(t time.Duration, callback func()) {
+	go func() {
+		time.Sleep(t)
+		callback()
+	}()
+}
+
 func (s *Scheduler) Schedule(fn func(), expr Expression) {
 	if fn != nil {
 		job := &job{
