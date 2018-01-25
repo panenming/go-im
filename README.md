@@ -12,3 +12,7 @@ go语言开发的im服务<br>
 ## 封装go网络层代码link
 ## link demo代码 go-tcpdemo/link_test
 
+## 使用nsq做消息分发队列
+
+## 使用minio做非结构化对象存储，包括图片，文件等等
+
