@@ -2,6 +2,10 @@ package main
 
 import (
 	"log"
+	"strings"
+
+	"github.com/panenming/go-im/libs/contenttype"
+	"github.com/panenming/go-im/libs/file"
 
 	"github.com/minio/minio-go"
 )
@@ -22,9 +26,9 @@ func main() {
 	//log.Printf("%#v\n", minioClient)
 
 	// 创建桶
-	bucketName := "gofile"
+	bucketName := "media"
 	// 所在区，一般是定死的
-	location := "us-east-1"
+	location := "z0"
 
 	err = minioClient.MakeBucket(bucketName, location)
 	if err != nil {
@@ -38,10 +42,14 @@ func main() {
 
 	log.Printf("Successfully created %s\n", bucketName)
 
-	// Upload file
-	objectName := "Windows.zip"
-	filePath := "D:/Windows.zip"
-	contentType := "application/zip"
+	// Upload file objectName 唯一
+	objectName := "panenming.mp3"
+	filePath := "D:/panenming.mp3"
+	ext := file.Ext(filePath)
+	ext = strings.Trim(ext, ".")
+	contentType := contenttype.GetContentTypeByExtension(ext)
+
+	log.Println("contenttype=", contentType)
 
 	n, err := minioClient.FPutObject(bucketName, objectName, filePath, minio.PutObjectOptions{ContentType: contentType})
 	if err != nil {

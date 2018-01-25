@@ -13,7 +13,6 @@ import (
 	"runtime"
 	"sort"
 	"strings"
-	"time"
 )
 
 // 封装常用的文件操作方法
@@ -230,7 +229,7 @@ func IsWritable(path string) bool {
 		}
 	} else {
 		// 如果是文件那么 判断文件是否可以打开
-		file, err := OpenWithFlag(path, os.O_WRONLY, 0666)
+		file, err := OpenWithFlag(path, os.O_WRONLY)
 		if err != nil {
 			result = false
 		}
@@ -256,7 +255,7 @@ func ScanDir(path string) []string {
 	if err != nil {
 		return nil
 	}
-	sort.Slice(list, func(i, j int) { return list[i] < list[j] })
+	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
 	return list
 }
 
