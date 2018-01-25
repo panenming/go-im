@@ -15,7 +15,9 @@ go语言开发的im服务<br>
 ## 使用nsq做消息分发队列
 
 ## 使用minio做非结构化对象存储，包括图片，文件等等
-	![https://github.com/panenming/go-im/minioloadbalance.jpg]()
+	![https://raw.githubusercontent.com/panenming/go-im/master/minioloadbalance.jpg]()
 	
 	minio 启动不同server，minio下连接相同disk，nginx代理minio server实现负载均衡
+	
+## 实现minio在线播放器demo（minio官方）
 
