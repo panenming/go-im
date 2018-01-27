@@ -1,10 +1,14 @@
 package idgen
 
 import (
+	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"testing"
 	"time"
+
+	"github.com/panenming/go-im/libs/datastruct"
 )
 
 func TestNewIDGenerator(t *testing.T) {
@@ -16,7 +20,7 @@ func TestNewIDGenerator(t *testing.T) {
 	gentor1, err := NewIDGenerator().SetWorkerId(100).Init()
 	if err != nil {
 		fmt.Println(err)
-		t.Error(err)
+		t.Fatal(err)
 	}
 	//第二个生成器
 	gentor2, err := NewIDGenerator().
@@ -26,7 +30,7 @@ func TestNewIDGenerator(t *testing.T) {
 		SetWorkerId(30).Init()
 	if err != nil {
 		fmt.Println(err)
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	fmt.Printf("%s%s%s\n", d, b, d)
@@ -45,12 +49,12 @@ func TestNewIDGenerator(t *testing.T) {
 	for i := 0; i < 100; i++ {
 		id1, err := gentor1.NextId()
 		if err != nil {
-			fmt.Println(err)
+			t.Fatal(err)
 			return
 		}
 		id2, err := gentor2.NextId()
 		if err != nil {
-			fmt.Println(err)
+			t.Fatal(err)
 			return
 		}
 		ids = append(ids, id2)
@@ -72,14 +76,14 @@ func TestSnowFlakeIdGenerator_MultiThread(t *testing.T) {
 	fp, err := os.OpenFile(f, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0755)
 	if err != nil {
 		fmt.Println(err)
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	//初始化ID生成器，采用默认参数
 	gentor, err := NewIDGenerator().SetWorkerId(100).Init()
 	if err != nil {
 		fmt.Println(err)
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	//启动10个线程，出错就报出来
@@ -88,17 +92,46 @@ func TestSnowFlakeIdGenerator_MultiThread(t *testing.T) {
 			for {
 				gid, err := gentor.NextId()
 				if err != nil {
-					panic(err)
+					t.Fatal(err)
 				}
 				n, err := fp.WriteString(fmt.Sprintf("%d\n", gid))
 				if err != nil || n <= 0 {
-					panic(err)
+					t.Fatal(err)
 				}
 			}
 		}()
 	}
 
 	// 10s 生成9w+ id
-	time.Sleep(10 * time.Second)
+	time.Sleep(60 * time.Second)
 	//time.Sleep(600 * time.Second)
+}
+
+func TestSameInFile(t *testing.T) {
+	// 记录一共生成多少id
+	count := 0
+	f := "snowflake.txt"
+	//准备写入的文件
+	fp, err := os.OpenFile(f, os.O_RDONLY, os.ModePerm)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// 将file中的数据装入set中
+	set := datastruct.NewSet()
+	rd := bufio.NewReader(fp)
+	for {
+		line, err := rd.ReadString('\n') //以'\n'为结束符读入一行
+
+		if err != nil || io.EOF == err {
+			break
+		}
+		set.Add(line)
+		count++
+	}
+
+	if set.Len() != count {
+		fmt.Println("set len = ", set.Len(), " count = ", count, " 两者不匹配，说明有相同的id")
+		t.Fatal("有相同的id")
+	}
 }
