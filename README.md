@@ -27,3 +27,7 @@ go语言开发的im服务<br>
 
 ## go inject github.com/facebookgo/inject
 
+## minitor 
+	github.com/divan/expvarmon(用于通过监控服务器端口来实现应用监控)
+	使用方式 expvarmon -ports="1234" 
+
