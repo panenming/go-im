@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Room</title>
+	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+</head>
+<boby>
+    <div>
+        <button id="createButton" type="submit" >创建房间</button>
+	</div>
+	<script>
+		domain = "http://localhost:3000";
+        $('#createButton').click(function(){
+			$.getJSON(domain + "/create",function(result){
+				if(result.kind == 6){ // 成功
+					alert(result.roomId)
+				}else{
+					alert(result.kind)
+				}
+			});
+		});
+    </script>
+</boby>
+</html>

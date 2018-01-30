@@ -10,6 +10,7 @@
             border: 1px sold #000;
         }
     </style>
+	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 </head>
 <boby>
 	<canvas id="canvas"
@@ -19,6 +20,7 @@
     <div>
         <button id="clearButton">Clear</button>
 	</div>
+	<select id="selectRooms">选择一个房间加入</select>
 	<script>
         MESSAGE_CONNECTED = 1;
         MESSAGE_USER_JOINED = 2;
@@ -26,13 +28,13 @@
         MESSAGE_STROKE = 4;
         MESSAGE_CLEAR = 5;
         window.onload = function() {
-          
-            let canvas = document.getElementById("canvas");
+		
+			let canvas = document.getElementById("canvas");
             let ctx = canvas.getContext("2d");
             let isDrawing = false;
             let strokeColor = '';
             let strokes = [];
-            let socket = new WebSocket("ws://localhost:3000/ws");
+            
             let otherStrocks = {};
             let otherColors = {};
             canvas.onmousedown = function(event) {
@@ -50,6 +52,48 @@
             canvas.onmouseleave = function() {
                 isDrawing = false;
             }
+		
+			// 创建获取room的下拉框
+			 var obj=document.getElementById('selectRooms');   
+			//添加一个选项   
+			obj.add(new Option("文本","值")); //这个只能在IE中有效   
+			 //这个兼容IE与firefox
+
+			domain = "http://localhost:3000";
+			
+			$.getJSON(domain + "/roomlist",function(result){
+				if(result.kind == 0){ // 成功
+					$.each(result.roomIds, function(i, field){
+					  obj.options.add(new Option(field,field));
+					});
+				}else{
+					alert("获取房间失败")
+					return
+				}
+			});
+			
+			roomId = ""
+			let socket
+			$("#selectRooms").bind("change",function(){
+				if($(this).val()==0){
+				  return;
+				}
+				else{
+				  roomId = $(this).val();
+				  if (roomId != ""){
+					socket = new WebSocket("ws://localhost:3000/ws" + "?roomId=" + roomId);
+					socket.onmessage = function(event) {
+					let messages = event.data.split('\n');
+						for (let i = 0; i < messages.length; i++) {
+							let message = JSON.parse(messages[i]);
+							onMessage(message);
+						}
+					}
+				 }
+				}
+			 }); 
+			 
+			 
             function addPoint(x, y, newStroke) {
                 var p = {x: x, y: y}
                 if (newStroke) {
@@ -93,13 +137,7 @@
                 socket.send(JSON.stringify({kind: MESSAGE_CLEAR}));
                 update();
             };
-            socket.onmessage = function(event) {
-                let messages = event.data.split('\n');
-                for (let i = 0; i < messages.length; i++) {
-                    let message = JSON.parse(messages[i]);
-                    onMessage(message);
-                }
-            }
+            
             function onMessage(message) {
                 switch (message.kind) {
                     case MESSAGE_CONNECTED:

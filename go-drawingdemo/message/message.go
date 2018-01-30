@@ -1,11 +1,13 @@
 package message
 
 const (
-	KindConnected  = iota + 1
-	KindUserJoined // 用户加入
-	KindUserLeft   // 用户离开
-	KindStroke     // 用户draw
-	KindClear      // 清除板面
+	KindConnected       = iota + 1
+	KindUserJoined      // 用户加入
+	KindUserLeft        // 用户离开
+	KindStroke          // 用户draw
+	KindClear           // 清除板面
+	KindRoomCreate      // 创建room
+	KindRoomCreateError // 创建room 出错
 )
 
 type Point struct {
@@ -72,4 +74,14 @@ type Stroke struct {
 type Clear struct {
 	Kind   int    `json:"kind"`
 	UserID string `json:"userId"`
+}
+
+type RoomCreate struct {
+	Kind   int    `json:"kind"`
+	RoomID string `json:"roomId"`
+}
+
+type RoomList struct {
+	Kind    int      `json:"kind"`
+	RoomIds []string `json:"roomIds"`
 }

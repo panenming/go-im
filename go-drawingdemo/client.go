@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	"github.com/gorilla/websocket"
 	"github.com/panenming/go-im/go-drawingdemo/utils"
 	uuid "github.com/satori/go.uuid"
@@ -29,24 +31,30 @@ func newClient(hub *Hub, socket *websocket.Conn) *Client {
 func (client *Client) read() {
 	defer func() {
 		client.hub.unregister <- client
+		client.socket.Close()
 	}()
 
+	client.socket.SetReadLimit(512)
+	client.socket.SetReadDeadline(time.Now().Add(60 * time.Second))
+	client.socket.SetPongHandler(func(string) error { client.socket.SetReadDeadline(time.Now().Add(60 * time.Second)); return nil })
 	for {
 		_, data, err := client.socket.ReadMessage()
 		if err != nil {
-			continue
+			break
 		}
+
 		client.hub.onMessage(data, client)
 	}
 }
 
 func (client *Client) write() {
+	defer client.socket.Close()
 	for {
 		select {
 		case data, ok := <-client.outbound:
 			if !ok {
 				client.socket.WriteMessage(websocket.CloseMessage, []byte{})
-				return
+				break
 			}
 			client.socket.WriteMessage(websocket.TextMessage, data)
 		}

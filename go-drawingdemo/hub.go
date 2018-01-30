@@ -34,11 +34,22 @@ func (hub *Hub) run() {
 	for {
 		select {
 		case client := <-hub.register:
-			hub.onConnect(client)
+			if client != nil {
+				hub.onConnect(client)
+			}
+
 		case client := <-hub.unregister:
-			hub.onDisConnect(client)
+			if client != nil {
+				hub.onDisConnect(client)
+			}
+
 		}
 	}
+}
+
+func (hub *Hub) close() {
+	close(hub.register)
+	close(hub.unregister)
 }
 
 func (hub *Hub) handleWebSocket(w http.ResponseWriter, r *http.Request) {
