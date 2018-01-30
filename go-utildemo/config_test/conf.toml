@@ -1,0 +1,6 @@
+Port=8080
+[[Instance]]
+    Name="gitbook"
+    Path="/gitbook"
+    Cmd=["ll","ls"]
+    User="panenming"
