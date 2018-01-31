@@ -23,7 +23,7 @@ go语言开发的im服务<br>
 
 ## 经过disruptor 高并发洗礼（控制多线程锁、合理的数据结构、缓存行填充、内存屏障）
 
-## go orm  http://jinzhu.github.io/gorm
+## go orm  http://jinzhu.github.io/gorm  中文文档 http://gorm.book.jasperxu.com/
 
 ## go inject github.com/facebookgo/inject
 
@@ -34,4 +34,6 @@ go语言开发的im服务<br>
 ## 分布式id生成 snowflake 可行性
 
 ## 在线画板（考虑在群聊中使用，需要进行room分割）
+
+## TiDB 数据库接入 替换mysql  elasticsearch 代替 mongodb
 
