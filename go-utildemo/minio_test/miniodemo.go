@@ -11,9 +11,9 @@ import (
 )
 
 func main() {
-	endpoint := "127.0.0.1:9000"
-	accessKey := "OV1CZC6UHXEFCVWEXWAO"
-	secretKey := "Om9BnBoeMqTCVvAkuJGpYMyddIsimHIvbZ70Rywn"
+	endpoint := "10.39.35.38:9000"
+	accessKey := "PYKBI9S2IH1JV00GH5KS"
+	secretKey := "ReTLfTEDGI3YWRwD9kbKagUxYFTZTPGkSXpmgQk8"
 
 	useSSL := false
 

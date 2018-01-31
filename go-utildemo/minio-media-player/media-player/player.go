@@ -14,7 +14,7 @@ import (
 
 var (
 	bucketName = flag.String("b", "", "Bucket name to be used for media assets.")
-	endPoint   = flag.String("e", "http://127.0.0.1:9000", "Choose a custom endpoint.")
+	endPoint   = flag.String("e", "http://10.39.35.38:9000", "Choose a custom endpoint.")
 )
 
 type mediaPlayList struct {
@@ -54,11 +54,11 @@ func mustGetAccessKeys() (accessKey, secretKey string) {
 	}
 
 	if accessKey == "" {
-		accessKey = "OV1CZC6UHXEFCVWEXWAO"
+		accessKey = "PYKBI9S2IH1JV00GH5KS"
 	}
 
 	if secretKey == "" {
-		secretKey = "Om9BnBoeMqTCVvAkuJGpYMyddIsimHIvbZ70Rywn"
+		secretKey = "ReTLfTEDGI3YWRwD9kbKagUxYFTZTPGkSXpmgQk8"
 	}
 	return accessKey, secretKey
 }
