@@ -24,3 +24,5 @@
 	
 	
 	[]string 不能直接转化为 []interface
+	
+	golang net/http 包自带了连接池，这就是为什么很多操作不需要自己实现连接池

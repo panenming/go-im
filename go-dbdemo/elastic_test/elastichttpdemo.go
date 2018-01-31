@@ -73,7 +73,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	//	select {}
+	select {}
 }
 
 type RunInfo struct {
@@ -198,8 +198,8 @@ func (t *TestCase) Run(n int) error {
 	//		go t.search()
 	//	}
 	var wg sync.WaitGroup
-	wg.Add(1000)
-	for i := 1; i <= 1000; i++ {
+	wg.Add(200)
+	for i := 1; i <= 200; i++ {
 		go t.search(&wg, i)
 	}
 	wg.Wait()
