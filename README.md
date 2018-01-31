@@ -35,7 +35,7 @@ go语言开发的im服务<br>
 
 ## 在线画板（考虑在群聊中使用，需要进行room分割）
 
-## TiDB 数据库接入 替换mysql  elasticsearch 代替 mongodb
+## TiDB 数据库接入 替换mysql  elasticsearch 代替 mongodb  redis 可以使用
 
 ## android ios ui  https://gitee.com/jpush/aurora-imui
 
