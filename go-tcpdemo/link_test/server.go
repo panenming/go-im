@@ -42,7 +42,7 @@ func serverSessionLoop(session *link.Session) {
 
 		if err != nil {
 			fmt.Println("server receive---", err.Error())
-			return
+			continue
 		}
 		err = session.Send(&AddRsp{
 			req.(*AddReq).A,
@@ -50,7 +50,7 @@ func serverSessionLoop(session *link.Session) {
 
 		if err != nil {
 			fmt.Println("server send---", err.Error())
-			return
+			continue
 		}
 	}
 }

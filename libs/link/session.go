@@ -105,7 +105,8 @@ func (session *Session) sendLoop() {
 	for {
 		select {
 		case msg, ok := <-session.sendChan:
-			if !ok || session.codec.Send(msg) != nil {
+			err := session.codec.Send(msg)
+			if !ok || err != nil {
 				return
 			}
 		case <-session.closeChan:
