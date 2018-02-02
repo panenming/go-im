@@ -37,7 +37,7 @@ go语言开发的im服务<br>
 
 ## TiDB 数据库接入 替换mysql  elasticsearch 代替 mongodb  redis 可以使用
 
-## android ios ui  https://gitee.com/jpush/aurora-imui
+## android ios ui  https://gitee.com/jpush/aurora-imui 前端通信框架选 https://github.com/Tencent/mars
 
 ## 协议借鉴参考 github.com/Terry-Mao/goim 中的顶层传输协议 proto,二层协议待定
 
