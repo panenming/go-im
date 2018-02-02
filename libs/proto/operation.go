@@ -13,6 +13,9 @@ const (
 	// 长连接做网关调用下属微服务
 	OP_GATEWAY       = int32(6)
 	OP_GATEWAY_REPLY = int32(7)
+
+	// 透传类消息 从服务器传到前端
+	OP_ACTION = int32(8)
 	// proto 相关
 	OP_PROTO_READY  = int32(100)
 	OP_PROTO_FINISH = int32(101)

@@ -22,12 +22,20 @@ type HandShake struct {
 
 // 发送文本消息的实体
 type Message struct {
+	Id     string      `json:"id"`     // 消息id
 	Fr     string      `json:"fr"`     // 来自谁
 	To     string      `json:"to"`     // 发送给哪个群
 	Type   string      `json:"type"`   // 消息类型
 	Txt    string      `json:"txt"`    // 消息提醒文本
+	Ct     int32       `json:"ct"`     // 创建时间
+	Extra  interface{} `json:"extra"`  // 和发送者相关的属性
 	Data   interface{} `json:"data"`   // 消息其他字段
 	Status int         `json:"status"` // 消息有效性 0 有效 1 无效
+}
+
+type Extra struct {
+	PhotoId string `json:"photoId"` // 人员头像
+	NName   string `json:"nName"`   // 人员在群里的昵称
 }
 
 // 调用网关实体
@@ -35,6 +43,15 @@ type Rpc struct {
 	Path   string      `json:"path"`   // 请求地址
 	Method int         `json:"method"` // 请求类型 GET POST PUT DELETE
 	Param  interface{} `json:"param"`  // 请求的参数
+}
+
+// 透传类消息
+type Action struct {
+	Id   string      `json:"id"`   // action id
+	Type int         `json:"type"` // action类型
+	GId  string      `json:"gId"`  // 操作的群组id
+	Ct   int32       `json:"ct"`   // action 生成时间
+	Data interface{} `json:"data"` // 对象实体
 }
 
 // 所有的请求返回统一的消息体（心跳除外）
