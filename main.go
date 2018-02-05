@@ -8,6 +8,7 @@ import (
 )
 
 func main() {
+	// 使用vscode 编辑
 	fmt.Println("启动服务器")
 	server.Serve()
 }

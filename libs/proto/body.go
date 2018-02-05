@@ -1,9 +1,5 @@
 package proto
 
-import (
-	"encoding/json"
-)
-
 const (
 	HTTP_GET = iota
 	HTTP_POST
