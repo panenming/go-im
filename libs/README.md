@@ -12,3 +12,4 @@
 	## proto 协议 借鉴github.com/Terry-Mao/goim的顶层协议
 	## queue 队列
 	## utest 测试类包
+	## connpool tcp连接池
