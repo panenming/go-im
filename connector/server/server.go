@@ -7,6 +7,9 @@ import (
 
 	_ "net/http/pprof"
 
+	"strconv"
+
+	"github.com/panenming/go-im/connector/redisTemple"
 	"github.com/panenming/go-im/libs/link"
 	"github.com/panenming/go-im/libs/proto"
 )
@@ -35,7 +38,16 @@ func serverSessionLoop(session *link.Session) {
 	for {
 		req, err := session.Receive()
 
+		// 获取到session的id
+		sessionId := session.ID()
+		fmt.Println("sessionId:", sessionId)
+		// 需要将sessionid写入用户的session中
+		err = redisTemple.RedisClient.Set("sessionId"+strconv.FormatUint(sessionId, 10), 1, 0).Err()
 		if err != nil {
+			panic(err)
+		}
+
+		if err != nil || req == nil {
 			fmt.Println("这时候该session已经关闭...receive err : ", err)
 			return
 		}

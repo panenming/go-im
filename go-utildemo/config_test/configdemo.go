@@ -22,7 +22,7 @@ type Config struct {
 }
 
 func main() {
-	file := flag.String("c", "conf.yaml", "config file path")
+	file := flag.String("c", "conf.json", "config file path")
 	flag.Parse()
 
 	var conf Config
