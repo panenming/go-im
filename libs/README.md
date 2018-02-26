@@ -16,3 +16,4 @@
 	## timingwheel 时间轮
 	## exec 带有timeout的exec
 	## identicon 根据用户手机，邮箱等信息生成唯一头像
+	## unique 生成唯一字符串
