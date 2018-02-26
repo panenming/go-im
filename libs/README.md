@@ -13,3 +13,6 @@
 	## queue 队列
 	## utest 测试类包
 	## connpool tcp连接池
+	## timingwheel 时间轮
+	## exec 带有timeout的exec
+	## identicon 根据用户手机，邮箱等信息生成唯一头像
