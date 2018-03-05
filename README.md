@@ -41,5 +41,7 @@ go语言开发的im服务<br>
 
 ## 协议借鉴参考 github.com/Terry-Mao/goim 中的顶层传输协议 proto,二层协议待定
 
-## 完成长连接初级阶段demo connector 。 go-im/main.go 启动 server， go-im/connector/client/client.go 启动测试client 
+## 完成长连接初级阶段demo connector 。 go-im/main.go 启动 server， go-im/connector/client/client.go 启动测试client
+
+## web 框架 go get -u github.com/kataras/iris 
 
